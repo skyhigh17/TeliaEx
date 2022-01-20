@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\DB;
 
 class AdminView extends Model
@@ -30,7 +29,6 @@ class AdminView extends Model
 
     public function update_data($data){
 
-        print_r($data->aktiivne_selector);
         $count = count($data->ekraan_id);
 
         if(!empty($data->ekraan_id) && !empty($data->ekraan_language_selector) && !empty($data->aktiivne_selector)){
