@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Artisan;
 class AdminView extends Model
 {
     use HasFactory;
@@ -15,6 +15,7 @@ class AdminView extends Model
         $ekraan->Name = $name;
         $ekraan->Language = $language;
         $ekraan->Url = $url;
+        $ekraan->active_vaade_id = 1;
         $ekraan->save();
         
         foreach($vaade_arr as $row){
@@ -24,7 +25,9 @@ class AdminView extends Model
                 'vaade_id' => $row
             ]);
 
-        }  
+        } 
+        Artisan::call('route:clear');
+ 
     }
 
     public function update_data($data){

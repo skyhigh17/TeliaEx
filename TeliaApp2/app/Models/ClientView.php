@@ -21,29 +21,33 @@ class ClientView extends Model
         //check where we are
         $url_arr = explode("/", $url);
         $url_clean = end($url_arr);
-        
-        $vaade_query = DB::table('vaade')
-            ->leftJoin('ekraan', 'ekraan.active_vaade_id', '=', 'vaade.id')
+
+        $vaade_query = DB::table('ekraan')
+            ->leftJoin('vaade', 'ekraan.active_vaade_id', '=', 'vaade.id')
             ->select('vaade.id as vaade_id', 'vaade.Name as vaade_name', 'ekraan.language', 'vaade.url as vaade_url', 'active_vaade_id', 'kuupaev')
             ->where('ekraan.url', '=', $url_clean)
             ->get();
 
         $aktiivne = "";
+        $language = "";
+
         foreach($vaade_query as $vaade_row){
             $kuupaev = $vaade_row->kuupaev;
-
+            $language = $vaade_row->language;
                 if($vaade_row->vaade_id == $vaade_row->active_vaade_id){
                     //kõhime välja keele ja lingid teistele vaadetele
                     
                     $aktiivne = $vaade_row->vaade_url;
                 }
-            
         }
+
         // kõhime välja aktiivse vaate
-        //vaate päis 
-        echo view("vaated/pais");
-        echo "<div>Vaate keel hetkel:".$vaade_row->language."</div>";
         
+        echo view("vaated/pais");
+        echo "<div>Vaate keel hetkel:".$language ."</div>";
+        if(empty($kuupaev)){
+            $kuupaev = "kuupäev puudub";
+        }
         echo View::make("vaated/".$aktiivne, ['Kuupaev' => $kuupaev]);
     }
     
